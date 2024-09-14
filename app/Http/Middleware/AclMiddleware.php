@@ -13,6 +13,10 @@ class AclMiddleware
         $user = Auth::user();
         $role = $user->role;
 
+        if($role == null) {
+            return redirect('/access-denied');
+        }
+
         $acl = config('acl.roles');
 
         if (isset($acl[$role][$section]) && $acl[$role][$section]) {
