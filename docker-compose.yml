@@ -15,20 +15,6 @@ services:
       - laravel-network
     depends_on:
       - db
-      - vite
-
-  # Vite development server
-  vite:
-    image: node:18
-    container_name: laravel-vite
-    working_dir: /var/www/html
-    command: npm run dev
-    volumes:
-      - .:/var/www/html  # Mount project directory in the container
-    ports:
-      - "5173:5173"  # Default port for Vite
-    networks:
-      - laravel-network
 
   # MySQL database service
   db:

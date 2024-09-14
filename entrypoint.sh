@@ -8,6 +8,8 @@ sleep 10
 
 # Run your additional commands here
 php artisan migrate
+npm install
+RUN npm run build
 
 # Keep the container running (foreground process)
 wait
