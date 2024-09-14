@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  # Laravel Apache service
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: laravel-web
+    ports:
+      - "8000:80"  # Map port 8000 on host to port 80 on container (Apache)
+    volumes:
+      - .:/var/www/html  # Mount project directory in the container
+    networks:
+      - laravel-network
+    depends_on:
+      - db
+      - vite
+
+  # Vite development server
+  vite:
+    image: node:18
+    container_name: laravel-vite
+    working_dir: /var/www/html
+    command: npm run dev
+    volumes:
+      - .:/var/www/html  # Mount project directory in the container
+    ports:
+      - "5173:5173"  # Default port for Vite
+    networks:
+      - laravel-network
+
+  # MySQL database service
+  db:
+    image: mysql:5.7
+    container_name: laravel-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: laravel_db
+      MYSQL_USER: laravel_user
+      MYSQL_PASSWORD: laravel_password
+    ports:
+      - "3306:3306"  # Expose MySQL on port 3306
+    networks:
+      - laravel-network
+
+networks:
+  laravel-network:
+    driver: bridge
